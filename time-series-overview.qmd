@@ -69,44 +69,37 @@ autoplot(air_passengers, value) +
 :::
 :::::
 
+## New Slide0
+
 ## TS Analysis vs TS Modeling: Digression
 
 ### Data Science
 
-
-::: columns
-:::: {.column width="50%"}
-
+::::: columns
+::: {.column width="50%"}
 ![](images/r4ds-workflow.png){width="500"}
-
-::::
-:::: column
-::::
 :::
+
+::: column
+:::
+:::::
 
 ### Data Analytics
 
-::: fragment
-
-::: columns
-:::: {.column width="50%"}
-
+:::::: fragment
+::::: columns
+::: {.column width="50%"}
 ![](images/r4ds-workflow-bi.png){width="500"}
-::::
-:::: column
+:::
 
+::: column
 -   Data Analytics = Data Science - Modeling
 -   Business Intelligence = Data Analytics + DataOps
-
-::::
 :::
+:::::
+::::::
 
 ## TS Analysis vs TS Modeling
 
 -   $Time Series Analysis \Rightarrow Decomposition$
 -   $Time Series Forecast \Rightarrow Modeling$
-
-
-
-
-
