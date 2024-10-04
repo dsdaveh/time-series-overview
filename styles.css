@@ -1,0 +1,4 @@
+/* Smaller font size for bullet points */
+ul li {
+  font-size: 0.6em;
+}

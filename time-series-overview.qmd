@@ -1,0 +1,112 @@
+---
+title: "Time Series Overview"
+format: 
+    revealjs:
+        incremental: false
+editor: visual
+css: styles.css
+---
+
+## Agenda
+
+## Time Series
+
+-   What are time series
+-   What problems can it solve
+-   Where does ts fit
+-   `tidyverts` a ts framework for R
+
+## Time Series - in an AI world
+
+```{mermaid}
+graph TD
+    AI["Artificial Intelligence"] --> ML["Machine Learning"]
+    ML --> DS["Data Science"]
+    DS --> TS["Time Series"]
+```
+
+## Time Series Overview
+
+::::: columns
+::: {.column width="50%"}
+### Definition
+
+-   A **time series** is a sequence of data points collected at regular time intervals, used to identify patterns, trends, or make forecasts over time.
+
+### Use Cases
+
+-   Segmented product sales over time.
+-   County pothole repair records.
+-   Monitoring stock prices and financial markets.
+-   Analyzing sensor data in IoT systems.
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-height: 8
+#| fig-cap: "Example Time Series Forecast"
+
+library(tsibble)
+library(fpp3)
+
+# Example: Monthly Air Passenger Data
+air_passengers <- as_tsibble(AirPassengers)
+
+# Simple Forecasting Model
+fit <- air_passengers %>%
+  model(ETS(value ~ error("A") + trend("A") + season("A")))
+
+# Forecast the next 12 periods
+fc <- fit %>% forecast(h = 12)
+
+# Plot the time series with forecast
+autoplot(air_passengers, value) +
+  autolayer(fc) +
+  labs(title = "Air Passenger Forecast",
+       y = "Passengers",
+       x = "Year")
+```
+:::
+:::::
+
+## TS Analysis vs TS Modeling: Digression
+
+### Data Science
+
+
+::: columns
+:::: {.column width="50%"}
+
+![](images/r4ds-workflow.png){width="500"}
+
+::::
+:::: column
+::::
+:::
+
+### Data Analytics
+
+::: fragment
+
+::: columns
+:::: {.column width="50%"}
+
+![](images/r4ds-workflow-bi.png){width="500"}
+::::
+:::: column
+
+-   Data Analytics = Data Science - Modeling
+-   Business Intelligence = Data Analytics + DataOps
+
+::::
+:::
+
+## TS Analysis vs TS Modeling
+
+-   $Time Series Analysis \Rightarrow Decomposition$
+-   $Time Series Forecast \Rightarrow Modeling$
+
+
+
+
+
