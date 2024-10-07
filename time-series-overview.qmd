@@ -18,6 +18,13 @@ css: styles.css
 
 ## Time Series - in an AI world
 
+```{r setup}
+library(tidyverse)
+library(here)
+library(readxl)
+```
+
+
 ```{mermaid}
 graph TD
     AI["Artificial Intelligence"] --> ML["Machine Learning"]
@@ -42,7 +49,7 @@ graph TD
 :::
 
 ::: {.column width="50%"}
-```{r}
+```{r ex-air-1}
 #| fig-height: 8
 #| fig-cap: "Example Time Series Forecast"
 
@@ -54,7 +61,7 @@ air_passengers <- as_tsibble(AirPassengers)
 
 # Simple Forecasting Model
 fit <- air_passengers %>%
-  model(ETS(value ~ error("A") + trend("A") + season("A")))
+  model(ETS(value))
 
 # Forecast the next 12 periods
 fc <- fit %>% forecast(h = 12)
@@ -71,7 +78,7 @@ autoplot(air_passengers, value) +
 
 ## New Slide0
 
-## TS Analysis vs TS Modeling: Digression
+## TS Forecast vs TS Analysis: Digression
 
 ### Data Science
 
@@ -99,7 +106,123 @@ autoplot(air_passengers, value) +
 :::::
 ::::::
 
-## TS Analysis vs TS Modeling
+## TS Forecast vs TS Analysis
 
--   $Time Series Analysis \Rightarrow Decomposition$
 -   $Time Series Forecast \Rightarrow Modeling$
+-   $Time Series Analysis \Rightarrow Decomposition/Segmentation$
+
+```{r ex-air-2}
+#| echo: true
+#| output-location: column
+
+library(tsibble)
+library(fpp3)
+
+# Example: Monthly Air Passenger Data
+air_passengers <- as_tsibble(AirPassengers)
+
+# Simple Forecasting Model
+fit <- air_passengers %>%
+  model(ETS(value ~ error() + trend() + season()))
+
+# Forecast the next 12 periods
+fc <- fit %>% forecast(h = 12)
+
+# Plot the time series with forecast
+autoplot(air_passengers, value) +
+  autolayer(fc) +
+  labs(title = "Air Passenger Forecast",
+       y = "Passengers",
+       x = "Year")
+```
+## TS Decomposition
+
+```{r decomp}
+#| echo: true
+air_passengers |> 
+    model(stl = STL(value)) |> 
+    components() |> 
+    autoplot()
+```
+## A More 'Real World' Dataset
+
+Courtesy of [Gun Violence Archive](https://www.gunviolencearchive.org)
+
+Initial look at the Malcolm Gladwell assertion from Revisionist History podcast [Guns Part 4: Moral Hazard](https://www.pushkin.fm/podcasts/revisionist-history/guns-part-4-moral-hazard). The assertion is that gun homicide statistics, which are decreasing, are masking a rise in total gun violence incidents because non-fatal shooting are not counted in the data. Note: the data from the Gun Violence Archive includes both fatality and injury-only incidents.
+
+```{r gva}
+gva3state <- read_excel(here("data/Gun Violence Archive - University of San Diego - Killed or Injured 20140101 - 20231010.xlsx"), 
+    skip = 4) |> 
+    mutate( Date = as.Date(Date),
+            severity = case_when(
+                `# Victims Killed` > 0 ~ 'Victim Fatality',
+                `# Victims Injured` > 0 ~ 'Victim Injury',
+                `# Suspect Killed` > 0 ~ 'Suspect Fatality',
+                `# Suspects Injured` > 0 ~ 'Suspect Injury',
+                TRUE ~ 'No Injury'),
+            fatality = str_detect(severity, 'Fatality'))
+
+gva3state |> 
+    filter(fatality == TRUE) |> 
+    count(Date, name = 'Incidents') |> 
+    ggplot(aes(Date, Incidents)) + 
+    geom_line() +
+    geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs")) +
+    ggtitle("Number of Gun Fatalities/Day (CA + IN + IL)" )
+```
+```{r gva_raw}
+gva3state |> 
+    select(`Incident ID`, Date, State, City, severity, fatality)
+
+```
+
+
+```{r gva_decomp1}
+#| echo: true
+
+gva_ts <- gva3state |> 
+    count(Date, State, fatality, name = 'Incidents') |> 
+    as_tsibble(index = Date,
+               key = c(State, fatality))
+
+gva_ts_yr <- gva3state |> 
+    filter(Date < ymd('2023-10-01'),
+           Date >= ymd('2018-10-01')) |> 
+    count(Date, State, fatality, name = 'Incidents') |> 
+    as_tsibble(index = Date,
+               key = c(State, fatality)) |> 
+    fill_gaps(Incidents = 0L)
+
+gva3state |> 
+    filter(Date < ymd('2023-10-01'),
+           Date >= ymd('2020-10-01')) |>
+    count(Date, name = 'Incidents') |> 
+    as_tsibble(index = Date) |> 
+    fill_gaps(Incidents = 0L) |> 
+    model(stl = STL(Incidents)) |> 
+    components() |> 
+    autoplot()
+```
+
+```{r gva_decomp2}
+#| echo: true
+
+gva_ts_yr <- gva3state |> 
+    filter(Date < ymd('2023-10-01'),
+           Date >= ymd('2020-10-01')) |> 
+    count(Date, State, fatality, name = 'Incidents') |> 
+    as_tsibble(index = Date,
+               key = c(State, fatality)) |> 
+    fill_gaps(Incidents = 0L)
+
+gva_ts_yr_plt <- gva_ts_yr |> 
+    model(stl = STL(Incidents)) |> 
+    components() |> 
+    autoplot()
+gva_ts_yr_plt
+```
+```{r}
+library(plotly)
+ggplotly(gva_ts_yr_plt)
+```
+
