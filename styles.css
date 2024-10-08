@@ -7,3 +7,8 @@ ul li {
 .big-bullets ul li {
   font-size: 1.0em; 
 }
+
+/* Custom font size for tables with the "small-table" class */
+.small-table table {
+  font-size: 0.8em;  /* Adjust this size as needed */
+}
