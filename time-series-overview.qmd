@@ -107,7 +107,6 @@ autoplot(air_passengers, value) +
 
 <div class="big-bullets">
 -   $Time Series Forecast \Rightarrow Modeling$
--   $Time Series Analysis \Rightarrow Decomposition/Segmentation$
 </div>
 
 ```{r ex-air-2}
@@ -135,6 +134,10 @@ autoplot(air_passengers, value) +
        y = "Passengers",
        x = "Year")
 ```
+
+<div class="big-bullets">
+-   $Time Series Analysis \Rightarrow Decomposition/Segmentation$
+</div>
 
 ## TS Decomposition
 
