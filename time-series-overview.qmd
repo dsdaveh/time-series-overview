@@ -78,7 +78,7 @@ autoplot(air_passengers, value) +
 :::
 :::::
 
-## TS Forecast vs TS Analysis: Digression
+## TS Forecast vs TS Analysis: Digression {.big-bullets}
 
 ### Data Science
 
@@ -100,8 +100,8 @@ autoplot(air_passengers, value) +
 :::
 
 ::: column
--   Data Analytics = Data Science - Modeling
--   Business Intelligence = Data Analytics + DataOps
+-   Data Analytics = <br> Data Science - Modeling
+-   Business Intelligence = <br> Data Analytics + DataOps
 :::
 :::::
 ::::::

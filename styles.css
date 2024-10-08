@@ -2,3 +2,8 @@
 ul li {
   font-size: 0.6em;
 }
+
+/* restore to default size */
+.big-bullets ul li {
+  font-size: 1.0em; 
+}
