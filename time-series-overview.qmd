@@ -78,51 +78,51 @@ autoplot(air_passengers, value) +
 :::
 :::::
 
-## TS Forecast vs TS Analysis: Digression {.big-bullets}
 
+
+## TS Forecast vs Analysis: Digression {.big-bullets}
+
+:::::: columns
+:::: {.column width="50%"}
 ### Data Science
 
-::::: columns
-::: {.column width="50%"}
 ![](images/r4ds-workflow.png){width="500"}
-:::
+:::: 
+:::: column
 
-::: column
-:::
-:::::
-
+::: fragment
 ### Data Analytics
 
-:::::: fragment
-::::: columns
-::: {.column width="50%"}
 ![](images/r4ds-workflow-bi.png){width="500"}
 :::
-
-::: column
--   Data Analytics = <br> Data Science - Modeling
--   Business Intelligence = <br> Data Analytics + DataOps
-:::
-:::::
+::::
 ::::::
 
-## TS Forecast vs TS Analysis {.smaller}
+-   Data Analytics = Data Science - Modeling
+-   Business Intelligence = Data Analytics + DataOps
 
+
+
+## TS Forecast vs Analysis {.smaller} 
+
+<div class="big-bullets">
 -   $Time Series Forecast \Rightarrow Modeling$
 -   $Time Series Analysis \Rightarrow Decomposition/Segmentation$
+</div>
 
 ```{r ex-air-2}
 #| echo: true
 #| output-location: column
+#| code-line-numbers: 1|4|7-8|11|14-18
+#| code-fold: true
 
-library(tsibble)
-library(fpp3)
+library(fpp3) # tidyverts
 
 # Example: Monthly Air Passenger Data
 air_passengers <- as_tsibble(AirPassengers)
 
 # Simple Forecasting Model
-fit <- air_passengers %>%
+fit <- air_passengers |>
   model(ETS(value ~ error() + trend() + season()))
 
 # Forecast the next 12 periods
@@ -150,9 +150,9 @@ air_passengers |>
 
 Courtesy of [Gun Violence Archive](https://www.gunviolencearchive.org)
 
-<div style="font-size: 0.8em;">
+::: {style="font-size: 0.8em;"}
 This is an initial look at the Malcolm Gladwell assertion from Revisionist History podcast [Guns Part 4: Moral Hazard](https://www.pushkin.fm/podcasts/revisionist-history/guns-part-4-moral-hazard). The assertion is that gun homicide statistics, which are decreasing, are masking a rise in total gun violence incidents because non-fatal shooting are not counted in the data. Note: the data from the Gun Violence Archive includes both fatality and injury-only incidents.
-</div>
+:::
 
 ```{r gva}
 #| echo: false
@@ -177,7 +177,7 @@ gva3state |>
     ggtitle("Number of Gun Fatalities/Day (CA + IN + IL)" )
 ```
 
-## {.smaller}
+##  {.smaller}
 
 ```{r gva_raw}
 gva3state |> 
@@ -185,7 +185,7 @@ gva3state |>
 
 ```
 
-## {.smaller}
+##  {.smaller}
 
 ```{r gva_decomp1}
 #| echo: true
@@ -201,7 +201,7 @@ gva3state |>
     autoplot()
 ```
 
-## {.smaller}
+##  {.smaller}
 
 ```{r gva_decomp2}
 #| echo: true
@@ -221,7 +221,7 @@ gva_ts_yr_plt <- gva_ts_yr |>
 gva_ts_yr_plt
 ```
 
-## {.smaller}
+##  {.smaller}
 
 ```{r}
 library(plotly)
