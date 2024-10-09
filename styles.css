@@ -17,5 +17,5 @@ ul li {
   padding-left: 5px;  /* Add padding on the left */
   padding-right: 30px; /* Add padding on the right */
   display: inline-block;  /* Ensure padding is respected */
-  font-size: 14px;  /* Optional: Adjust font size */
+  font-size: 1.3em;  /* Optional: Adjust font size */
 }

@@ -20,17 +20,18 @@ library(readxl)
 
 ## Agenda
 
-:::: columns
+:::::: columns
 ::: column
-
 ### Time Series
 
 -   What are time series?
 -   What problems can it solve?
 -   `tidyverts` a ts framework for R
-
+-   Time series in the context of AI
 :::
-::: column
+
+:::: column
+::: fragment
 ```{mermaid}
 graph TD
     AI["Artificial Intelligence"] --> ML["Machine Learning"]
@@ -39,14 +40,11 @@ graph TD
 ```
 :::
 ::::
+::::::
+
 ### Quarto
-- An open-source scientific and technical publishing system 
 
-## Time Series - in an AI world
-
-
-
-
+-   An open-source scientific and technical publishing system
 
 ## Time Series Overview
 
@@ -93,36 +91,44 @@ autoplot(air_passengers, value) +
 :::
 :::::
 
-
-
 ## TS Forecast vs Analysis: Digression {.big-bullets}
 
-:::::: columns
-:::: {.column width="50%"}
+::::::: columns
+::: {.column width="50%"}
 ### Data Science
 
-![](images/r4ds-workflow.png){width="500"}
-:::: 
-:::: column
+[![R for Data Science (2e) - Whole Game](images/r4ds-workflow.png){width="500"}](https://r4ds.hadley.nz/whole-game)
+:::
 
+::::: column
 ::: fragment
 ### Data Analytics
+:::
 
+::: fragment
 ![](images/r4ds-workflow-bi.png){width="500"}
 :::
-::::
-::::::
+:::::
+:::::::
+
+
 
 -   Data Analytics = Data Science - Modeling
 -   Business Intelligence = Data Analytics + DataOps
 
+## TS Forecast vs Analysis {.smaller}
 
+### Introducing the `tidyverts`
 
-## TS Forecast vs Analysis {.smaller} 
+![tidyverts packages](images/tidyverts.png)
 
-<div class="big-bullets">
+[tidyverts.org](https://tidyverts.org/)
+
+## TS Forecast vs Analysis {.smaller}
+
+::: big-bullets
 -   $Time Series Forecast \Rightarrow Modeling$
-</div>
+:::
 
 ```{r ex-air-2}
 #| echo: true
@@ -150,9 +156,9 @@ autoplot(air_passengers, value) +
        x = "Year")
 ```
 
-<div class="big-bullets">
+::: big-bullets
 -   $Time Series Analysis \Rightarrow Decomposition/Segmentation$
-</div>
+:::
 
 ## TS Decomposition
 
@@ -168,11 +174,11 @@ air_passengers |>
 
 Courtesy of [Gun Violence Archive](https://www.gunviolencearchive.org)
 
-::: panel-tabset
-
+:::: panel-tabset
 ### Background
+
 ::: {style="font-size: 0.8em;"}
-This is an initial look at the Malcolm Gladwell assertion from Revisionist History podcast [Guns Part 4: Moral Hazard](https://www.pushkin.fm/podcasts/revisionist-history/guns-part-4-moral-hazard). The assertion is that gun homicide statistics, which are decreasing, are masking a rise in total gun violence incidents because non-fatal shooting are not counted in the data. 
+This is an initial look at the Malcolm Gladwell assertion from Revisionist History podcast [Guns Part 4: Moral Hazard](https://www.pushkin.fm/podcasts/revisionist-history/guns-part-4-moral-hazard). The assertion is that gun homicide statistics, which are decreasing, are masking a rise in total gun violence incidents because non-fatal shooting are not counted in the data.
 
 Note: the data from the Gun Violence Archive includes both fatality and injury-only incidents and is compiled from media reports. Incidents that were reported to the police, but not found in public reports is not included.
 :::
@@ -203,9 +209,6 @@ gva3state |>
     ggtitle("Number of Gun Fatalities/Day (CA + IN + IL)" )
 ```
 
-
-
-
 ### Decomp
 
 ```{r gva_decomp1}
@@ -222,7 +225,7 @@ gva3state |>
     autoplot()
 ```
 
-### Data  {.smaller}
+### Data {.smaller}
 
 ```{r gva_raw}
 #| echo: false
@@ -235,7 +238,7 @@ gva3state |>
     gt()
 
 ```
-:::
+::::
 
 ##  {.smaller}
 
@@ -300,7 +303,6 @@ gva_3city_train |>
     facet_wrap(. ~ City, ncol = 1, scales = "free_y")
 ```
 
-
 ## Chicago
 
 ```{r chicago}
@@ -321,7 +323,10 @@ gva_chi_train |>
     geom_line(data = gva_chi_test, color = "skyblue") +
     ggtitle('Chicago Gun Violence 2023')
 ```
-## Chicago Forecast - Exponential Smoothing 
+
+## Chicago Forecast - ETS
+
+### Exponential Smoothing
 
 ```{r chi_forecast}
 #| echo: true
@@ -376,10 +381,9 @@ gva_chi_train |>
 
 ## Chicago Forecast - ARIMA
 
-
 ```{r chi_arima}
 #| echo: true
-#| output-location: slide
+#| output-location: fragment
 #| code-line-numbers: 2-8
 
 chi_fit <- gva_chi_train |> 
@@ -394,19 +398,32 @@ chi_fit <- gva_chi_train |>
 # Forecast the next 12 periods
 chi_fc <- chi_fit %>% forecast(h = 30)
 
+chi_fit |> pivot_longer(everything())
+```
+
+## Chicago Forecast - ARIMA output {.smaller}
+
+:::::: columns
+::: {.column width="80%"}
+```{r arima_plts2}
+#| fig-height: 8
 autoplot(chi_fc, level = NULL) +
     autolayer(gva_chi_test, Incidents, alpha = 0.3)+
     labs(title = "Chicago GVA September Incidents Forecast") +
-    facet_wrap(. ~ .model)
+    facet_wrap(. ~ .model, ncol = 3) +
+    guides(color = "none", fill = "none")  # Remove the guides (legend)
 ```
+:::
 
-## Chicago Forecast - ARIMA Metrics
-
+:::: {.column width="20%"}
+::: fragment
 ```{r}
 #| echo: false
 accuracy(chi_fc, gva_chi_test) |> 
-    select(.model, .type, RMSE) |> 
+    select(.model, RMSE) |> 
     arrange(RMSE) |> 
     gt() 
 ```
-
+:::
+::::
+::::::
