@@ -6,33 +6,47 @@ format:
 editor: visual
 css: styles.css
 execute: 
-  echo: true
+  echo: false
   cache: true
 ---
 
-## Agenda
-
-## Time Series
-
--   What are time series
--   What problems can it solve
--   Where does ts fit
--   `tidyverts` a ts framework for R
-
-## Time Series - in an AI world
-
 ```{r setup}
+#| echo: false
+
 library(tidyverse)
 library(here)
 library(readxl)
 ```
 
+## Agenda
+
+:::: columns
+::: column
+
+### Time Series
+
+-   What are time series?
+-   What problems can it solve?
+-   `tidyverts` a ts framework for R
+
+:::
+::: column
 ```{mermaid}
 graph TD
     AI["Artificial Intelligence"] --> ML["Machine Learning"]
     ML --> DS["Data Science"]
     DS --> TS["Time Series"]
 ```
+:::
+::::
+### Quarto
+- An open-source scientific and technical publishing system 
+
+## Time Series - in an AI world
+
+
+
+
 
 ## Time Series Overview
 
@@ -247,9 +261,45 @@ gva_ts_yr_plt
 ##  {.smaller}
 
 ```{r plotly}
+#| echo: true
 library(plotly)
 ggplotly(gva_ts_yr_plt)
 ```
+
+## Forecasting Multiple Cities {.smaller}
+
+```{r fc_3city}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: 7|14
+gva_3city <- gva3state |> 
+    filter(Date < ymd('2023-10-01'),
+           Date >= ymd('2020-10-01'),
+           City %in% c('Chicago', 'Los Angeles', 'Indianapolis')) |> 
+    count(Date, City, name = 'Incidents') |> 
+    as_tsibble(index = Date,
+               key = c(City)) |> 
+    fill_gaps(Incidents = 0L)
+
+gva_3city_train <- gva_3city |> filter(Date < ymd('2023-09-01'))
+gva_3city_test <- gva_3city |> filter(Date >= ymd('2023-09-01'))
+
+gva_3city_fit <- gva_3city_train |> 
+    model(ETS = ETS(Incidents))
+
+# Forecast the next 12 periods
+gva_3city_fc <- gva_3city_fit %>% forecast(h = 30)
+
+# Plot the time series with forecast
+gva_3city_train |> 
+    filter(Date >= ymd('2023-07-01')) |> 
+    autoplot(Incidents) +
+    autolayer(gva_3city_fc, Incidents, alpha = 0.5) +
+    autolayer(gva_3city_test, Incidents, alpha = 0.3)+
+    labs(title = "Metropolis GVA September Incidents Forecast") +
+    facet_wrap(. ~ City, ncol = 1, scales = "free_y")
+```
+
 
 ## Chicago
 
@@ -271,8 +321,11 @@ gva_chi_train |>
     geom_line(data = gva_chi_test, color = "skyblue") +
     ggtitle('Chicago Gun Violence 2023')
 ```
+## Chicago Forecast - Exponential Smoothing 
 
 ```{r chi_forecast}
+#| echo: true
+#| output-location: slide
 chi_fit <- gva_chi_train |> 
   model(ETS(Incidents))
 
@@ -288,32 +341,52 @@ gva_chi_train |>
     labs(title = "Chicago GVA September Incidents Forecast")
 
 ```
+## Chicago Forecast - ARIMA
 
 ```{r}
+#| echo: true
 gva_chi_train |> 
     gg_tsdisplay(y = Incidents |> 
-                     difference() |> 
                      difference(7), 
                  plot_type = 'partial')
 ```
 
+## Chicago Forecast - ARIMA
 
 
 ```{r chi_arima}
+#| echo: true
+#| output-location: slide
+
 chi_fit <- gva_chi_train |> 
-  model(ETS = ETS(Incidents),
-        #auto_arima = ARIMA(Incidents),
-        arima = ARIMA(Incidents ~ pdq(1,1,0) + PDQ(0,1,1)))
+  model(auto_arima = ARIMA(Incidents),
+        #auto_arima2 = ARIMA(Incidents, stepwise = FALSE, approx = FALSE),
+        auto_dfix = ARIMA(Incidents ~ 0 + pdq(1,1,1) + PDQ(0,1,2)),
+        arima_ar = ARIMA(Incidents ~ 0 + pdq(2,0,0) + PDQ(4,1,0)),
+        arima_ma = ARIMA(Incidents ~ 0 + pdq(0,0,2) + PDQ(0,1,0)),
+        ets = ETS(Incidents),
+        snaive = SNAIVE(Incidents))
 
 # Forecast the next 12 periods
 chi_fc <- chi_fit %>% forecast(h = 30)
 
 # Plot the time series with forecast
 gva_chi_train |> 
-    filter(year(Date) == 2023) |> 
+    filter(Date >= ymd('2023-07-01')) |> 
     autoplot(Incidents) +
     autolayer(chi_fc, Incidents, level = NULL) +
     autolayer(gva_chi_test, Incidents, alpha = 0.3)+
     labs(title = "Chicago GVA September Incidents Forecast")
 
 ```
+
+```{r}
+    autoplot(chi_fc, level = NULL) +
+    autolayer(gva_chi_test, Incidents, alpha = 0.3)+
+    labs(title = "Chicago GVA September Incidents Forecast") +
+    facet_wrap(. ~ .model)
+```
+```{r}
+accuracy(chi_fc, gva_chi_test)
+```
+
