@@ -12,3 +12,10 @@ ul li {
 .small-table table {
   font-size: 0.8em;  /* Adjust this size as needed */
 }
+
+.nodeLabel {
+  padding-left: 5px;  /* Add padding on the left */
+  padding-right: 30px; /* Add padding on the right */
+  display: inline-block;  /* Ensure padding is respected */
+  font-size: 14px;  /* Optional: Adjust font size */
+}

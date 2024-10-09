@@ -341,6 +341,29 @@ gva_chi_train |>
     labs(title = "Chicago GVA September Incidents Forecast")
 
 ```
+
+## ARIMA Process
+
+```{mermaid}
+graph TD
+    classDef boxStyle padding:30px;
+
+    Step1["Plot the data. Understand the Patterns"] --> Step2["Stablize Variables (Box-Cox)"]
+    Step2 --> Choose["Select Method"]
+    Choose --> |Auto| StepA1["Use ARIMA()"]
+    Choose --> |Manual| StepB1["Difference to make series stationary"]
+    StepB1 --> StepB2["Plot ACF/PACF"]
+    StepB2 --> StepB3["Use ARIMA(var ~ pdq() + PDQ())"]
+    StepB3 --> Residuals["Check Residuals and ACF"]
+    StepA1 --> Residuals
+    Residuals --> |No| StepB2
+    Residuals --> |Yes| Forecast["Calculate Forcast"]
+    
+    style Choose fill:#9f9,stroke:#333,stroke-width:2px,rx:50,ry:50;
+    style Residuals fill:#9f9,stroke:#333,stroke-width:2px,rx:50,ry:50;
+
+```
+
 ## Chicago Forecast - ARIMA
 
 ```{r}
@@ -357,36 +380,33 @@ gva_chi_train |>
 ```{r chi_arima}
 #| echo: true
 #| output-location: slide
+#| code-line-numbers: 2-8
 
 chi_fit <- gva_chi_train |> 
   model(auto_arima = ARIMA(Incidents),
         #auto_arima2 = ARIMA(Incidents, stepwise = FALSE, approx = FALSE),
         auto_dfix = ARIMA(Incidents ~ 0 + pdq(1,1,1) + PDQ(0,1,2)),
         arima_ar = ARIMA(Incidents ~ 0 + pdq(2,0,0) + PDQ(4,1,0)),
-        arima_ma = ARIMA(Incidents ~ 0 + pdq(0,0,2) + PDQ(0,1,0)),
+        arima_ma = ARIMA(Incidents ~ 0 + pdq(0,0,2) + PDQ(0,1,1)),
         ets = ETS(Incidents),
         snaive = SNAIVE(Incidents))
 
 # Forecast the next 12 periods
 chi_fc <- chi_fit %>% forecast(h = 30)
 
-# Plot the time series with forecast
-gva_chi_train |> 
-    filter(Date >= ymd('2023-07-01')) |> 
-    autoplot(Incidents) +
-    autolayer(chi_fc, Incidents, level = NULL) +
-    autolayer(gva_chi_test, Incidents, alpha = 0.3)+
-    labs(title = "Chicago GVA September Incidents Forecast")
-
-```
-
-```{r}
-    autoplot(chi_fc, level = NULL) +
+autoplot(chi_fc, level = NULL) +
     autolayer(gva_chi_test, Incidents, alpha = 0.3)+
     labs(title = "Chicago GVA September Incidents Forecast") +
     facet_wrap(. ~ .model)
 ```
+
+## Chicago Forecast - ARIMA Metrics
+
 ```{r}
-accuracy(chi_fc, gva_chi_test)
+#| echo: false
+accuracy(chi_fc, gva_chi_test) |> 
+    select(.model, .type, RMSE) |> 
+    arrange(RMSE) |> 
+    gt() 
 ```
 
