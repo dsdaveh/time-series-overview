@@ -1,5 +1,7 @@
 ---
-title: "Time Series Overview"
+title: "A Time Series Overview with Quarto"
+author: "Dave Hurst - Director of Data Science Platforms"
+date: "October 10, 2024"
 format: 
     revealjs:
         incremental: true
@@ -9,6 +11,12 @@ execute:
   echo: false
   cache: true
 ---
+
+## Overview {.smaller}
+
+This presentation offers a friendly introduction to Time Series, designed for everyone at ProCogia. We’ll begin with a brief introduction to Dave, who is leading our Data Science platform strategy. From there, we'll explore what sets time series data apart from other types of data, dive into analysis and forecasting using an R framework, and showcase engaging examples of time series from current events. Finally, we’ll conclude with a discussion on Quarto, the technical communication tool used to create this presentation.\
+\
+***Please note**: This presentation includes data from the **Gun Violence Archive**, and some discussion around shooting fatalities which some may find upsetting.*
 
 ```{r setup}
 #| echo: false
@@ -111,8 +119,6 @@ autoplot(air_passengers, value) +
 :::::
 :::::::
 
-
-
 -   Data Analytics = Data Science - Modeling
 -   Business Intelligence = Data Analytics + DataOps
 
@@ -122,7 +128,15 @@ autoplot(air_passengers, value) +
 
 ![tidyverts packages](images/tidyverts.png)
 
+::::: columns
+::: column
 [tidyverts.org](https://tidyverts.org/)
+:::
+
+::: column
+[![https://otexts.com/fpp3/](images/hyndman_book.png){fig-align="left" width="400"}](https://otexts.com/fpp3/)
+:::
+:::::
 
 ## TS Forecast vs Analysis {.smaller}
 
@@ -274,7 +288,7 @@ ggplotly(gva_ts_yr_plt)
 ```{r fc_3city}
 #| echo: true
 #| output-location: slide
-#| code-line-numbers: 7|14
+#| code-line-numbers: 4|7|14
 gva_3city <- gva3state |> 
     filter(Date < ymd('2023-10-01'),
            Date >= ymd('2020-10-01'),
