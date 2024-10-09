@@ -240,13 +240,80 @@ gva_ts_yr <- gva3state |>
 gva_ts_yr_plt <- gva_ts_yr |> 
     model(stl = STL(Incidents)) |> 
     components() |> 
-    autoplot()
+    autoplot() 
 gva_ts_yr_plt
 ```
 
 ##  {.smaller}
 
-```{r}
+```{r plotly}
 library(plotly)
 ggplotly(gva_ts_yr_plt)
+```
+
+## Chicago
+
+```{r chicago}
+gva_chicago <- gva3state |> 
+    filter(Date < ymd('2023-10-01'),
+           Date >= ymd('2020-10-01'),
+           City == "Chicago",
+           State == "Illinois") |> 
+    count(Date, City, name = 'Incidents') |> 
+    as_tsibble(index = Date) |> 
+    fill_gaps(Incidents = 0L)
+
+gva_chi_train <- gva_chicago |> filter(Date < ymd('2023-09-01'))
+gva_chi_test <- gva_chicago |> filter(Date >= ymd('2023-09-01'))
+
+gva_chi_train |> 
+    autoplot(Incidents) +
+    geom_line(data = gva_chi_test, color = "skyblue") +
+    ggtitle('Chicago Gun Violence 2023')
+```
+
+```{r chi_forecast}
+chi_fit <- gva_chi_train |> 
+  model(ETS(Incidents))
+
+# Forecast the next 12 periods
+chi_fc <- chi_fit %>% forecast(h = 30)
+
+# Plot the time series with forecast
+gva_chi_train |> 
+    filter(year(Date) == 2023) |> 
+    autoplot(Incidents) +
+    autolayer(chi_fc, Incidents, alpha = 0.5) +
+    autolayer(gva_chi_test, Incidents, alpha = 0.3)+
+    labs(title = "Chicago GVA September Incidents Forecast")
+
+```
+
+```{r}
+gva_chi_train |> 
+    gg_tsdisplay(y = Incidents |> 
+                     difference() |> 
+                     difference(7), 
+                 plot_type = 'partial')
+```
+
+
+
+```{r chi_arima}
+chi_fit <- gva_chi_train |> 
+  model(ETS = ETS(Incidents),
+        #auto_arima = ARIMA(Incidents),
+        arima = ARIMA(Incidents ~ pdq(1,1,0) + PDQ(0,1,1)))
+
+# Forecast the next 12 periods
+chi_fc <- chi_fit %>% forecast(h = 30)
+
+# Plot the time series with forecast
+gva_chi_train |> 
+    filter(year(Date) == 2023) |> 
+    autoplot(Incidents) +
+    autolayer(chi_fc, Incidents, level = NULL) +
+    autolayer(gva_chi_test, Incidents, alpha = 0.3)+
+    labs(title = "Chicago GVA September Incidents Forecast")
+
 ```
