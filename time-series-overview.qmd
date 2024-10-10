@@ -365,6 +365,43 @@ gva_chi_train |>
 
 ```
 
+## ARIMA Models
+
+::: fragment
+### AR - Auto Regression 
+
+- Regression model using preceding time lag(s) 
+
+### I - Integrated
+
+- Compute Differences to remove trend, seasonality, variance (stationarity)
+
+### MA - Moving Average (Model)
+
+- MLE model using the residual (error) term(s)
+
+::: 
+
+## ARIMA  (and SARIMA) Models
+
+`ARIMA(y ~ pdq() + PDQ() )` 
+
+AR(p) where:
+
+$$
+X_t = c + \phi_1 X_{t-1} + \phi_2 X_{t-2} + \dots + \phi_p X_{t-p} + \epsilon_t
+$$
+
+
+MA(q)
+
+$$
+X_t = \mu + \epsilon_t + \theta_1 \epsilon_{t-1} + \theta_2 \epsilon_{t-2} + \dots + \theta_q \epsilon_{t-q}
+$$
+
+d - is the number of differences \
+P,D,Q - are the seasonal terms
+
 ## ARIMA Process
 
 ```{mermaid}
@@ -386,6 +423,54 @@ graph TD
     style Residuals fill:#9f9,stroke:#333,stroke-width:2px,rx:50,ry:50;
 
 ```
+
+## ARIMA - Stationarity Example
+
+```{r airex-1}
+autoplot(air_passengers, value) 
+```
+
+## ARIMA - Stationarity Example 
+
+```{r airex-2}
+#| echo: true
+air_passengers |> 
+    mutate(log_v = log(value)) |> 
+    autoplot(log_v) 
+```
+## ARIMA - Stationarity Example 
+
+```{r airex-3}
+#| echo: true
+#| warning: false
+air_passengers |> 
+    mutate(log_v = log(value),
+           D1 = difference(log_v, lag = 12)) |>
+    autoplot(D1) 
+```
+## ARIMA - Stationarity Example 
+
+```{r airex-4}
+#| echo: true
+#| warning: false
+air_passengers |> 
+    mutate(log_v = log(value),
+           D1 = difference(log_v, lag = 12),
+           D1d1 = difference(D1, lag = 1)) |>
+    autoplot(D1d1) 
+```
+```{r airex-5}
+#| echo: true
+#| warning: false
+#| output-location: column
+
+air_passengers |> 
+    mutate(log_v = log(value),
+           D1 = difference(log_v, lag = 12),
+           D1d1 = difference(D1, lag = 1)) |>
+    features(D1d1, unitroot_kpss) 
+```
+
 
 ## Chicago Forecast - ARIMA
 
