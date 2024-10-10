@@ -10,7 +10,7 @@ css: styles.css
 :::::::::::: r-hstack
 ::::: {.circle .circle-blue data-id="circle1"}
 ::: circle-text
-Data\<Science
+Data Science
 :::
 
 ::: explain-text
@@ -106,4 +106,54 @@ DevOps
 -   Enterprise AI Applications
 ::::
 
+## Enterprise Data Disciplines 
 
+### Opportunities in the Overlap - Strategic Intent
+
+::::::::: r-stack
+:::: {.circle .circle-blue data-id="circle1" style="position: absolute; top: 0px; left: 200px;"}
+::: {.circle-text style="left: -30px; top: 100px;"}
+Data Science
+:::
+::::
+
+:::: {.circle .circle-green data-id="circle2" style="position: absolute; top: 0px; left: 400px;"}
+::: {.circle-text style="left: 30px; top: 100px;"}
+DataOps
+:::
+::::
+
+:::: {.circle .circle-pink data-id="circle3" style="position: absolute; top: 170px; left: 300px;"}
+::: {.circle-text style="top: 170px;"}
+DevOps
+:::
+::::
+:::::::::
+
+::: {.star .star-visible style="font-size: 1em; position: absolute; top: 350px; left: 450px;"}
+★
+:::
+
+:::: {style="font-size: 0.8em; position: absolute; top: 30%; left: 70%;"}
+::: {.star .star-visible style="font-size: 1.5em; position: relative; left: 100px"}
+★
+:::
+
+-   Interesting, Valuable Problems
+-   Multi-talented Individuals/Teams
+-   Data Science Platforms
+-   Enterprise AI Applications
+::::
+
+:::: {style="font-size: 0.5em; position: absolute; top: 400px; left: 350px;"}
+Platform<br>Installs
+::::
+:::: {style="font-size: 0.5em; position: absolute; top: 400px; left: 500px; color: #AAAAAA;"}
+Pipelines
+::::
+:::: {style="font-size: 0.5em; position: absolute; top: 250px; left: 430px; text-align: center; color: #AAAAAA;"}
+BI/<br>Analytics
+::::
+:::  {style="font-size: 1em; position: absolute; top: 95%; "}
+Intent: Move from 2-discipline overlaps into the sweetspot.
+:::
