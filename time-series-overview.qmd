@@ -18,6 +18,10 @@ This presentation offers a friendly introduction to Time Series, designed for ev
 \
 ***Please note**: This presentation includes data from the **Gun Violence Archive**, and some discussion around shooting fatalities which some may find upsetting.*
 
+## Data Science Platform Strategy
+
+{{< include dsp-animation.qmd >}}
+
 ```{r setup}
 #| echo: false
 
@@ -42,8 +46,8 @@ library(readxl)
 ::: fragment
 ```{mermaid}
 graph TD
-    AI["Artificial Intelligence"] --> ML["Machine Learning"]
-    ML --> DS["Data Science"]
+    AI["Artificial Intelligence"] --> ML["Machine Learning"]  
+    ML --> DS["Data Science"] 
     DS --> TS["Time Series"]
 ```
 :::
@@ -134,7 +138,7 @@ autoplot(air_passengers, value) +
 :::
 
 ::: column
-[![https://otexts.com/fpp3/](images/hyndman_book.png){fig-align="left" width="400"}](https://otexts.com/fpp3/)
+[![https://otexts.com/fpp3/](images/hyndman_book.png){fig-align="left" width="600"}](https://otexts.com/fpp3/)
 :::
 :::::
 
