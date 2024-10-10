@@ -1,0 +1,29 @@
+---
+format: 
+    revealjs:
+        incremental: true
+css: styles.css
+---
+
+## TS Forecast vs Analysis: Digression {.big-bullets}
+
+::::::: columns
+::: {.column width="50%"}
+### Data Science
+
+[![R for Data Science (2e) - Whole Game](images/r4ds-workflow.png){width="500"}](https://r4ds.hadley.nz/whole-game)
+:::
+
+::::: column
+::: fragment
+### Data Analytics
+:::
+
+::: fragment
+![](images/r4ds-workflow-bi.png){width="500"}
+:::
+:::::
+:::::::
+
+-   Data Analytics = Data Science - Modeling
+-   Business Intelligence = Data Analytics + DataOps
