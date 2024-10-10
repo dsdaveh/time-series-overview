@@ -46,8 +46,8 @@ library(readxl)
 ::: fragment
 ```{mermaid}
 graph TD
-    AI["Artificial Intelligence"] --> ML["Machine Learning"]  
-    ML --> DS["Data Science"] 
+    ML["Machine Learning"] --> AI["Artificial Intelligence"] 
+    DS["Data Science"] --> ML
     DS --> TS["Time Series"]
 ```
 :::
