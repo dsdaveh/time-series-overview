@@ -378,7 +378,7 @@ gva_chi_train |>
 
 ### MA - Moving Average (Model)
 
--   MLE model using the residual (error) term(s)
+-   Maximum Likelihood Estimatino (MLE) model using the residual (error) term(s)
 :::
 
 ## ARIMA (and SARIMA) Models
