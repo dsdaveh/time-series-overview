@@ -368,23 +368,22 @@ gva_chi_train |>
 ## ARIMA Models
 
 ::: fragment
-### AR - Auto Regression 
+### AR - Auto Regression
 
-- Regression model using preceding time lag(s) 
+-   Regression model using preceding time lag(s)
 
 ### I - Integrated
 
-- Compute Differences to remove trend, seasonality, variance (stationarity)
+-   Compute Differences to remove trend, seasonality, variance (stationarity)
 
 ### MA - Moving Average (Model)
 
-- MLE model using the residual (error) term(s)
+-   MLE model using the residual (error) term(s)
+:::
 
-::: 
+## ARIMA (and SARIMA) Models
 
-## ARIMA  (and SARIMA) Models
-
-`ARIMA(y ~ pdq() + PDQ() )` 
+`ARIMA(y ~ pdq() + PDQ() )`
 
 AR(p) where:
 
@@ -392,14 +391,13 @@ $$
 X_t = c + \phi_1 X_{t-1} + \phi_2 X_{t-2} + \dots + \phi_p X_{t-p} + \epsilon_t
 $$
 
-
 MA(q)
 
 $$
 X_t = \mu + \epsilon_t + \theta_1 \epsilon_{t-1} + \theta_2 \epsilon_{t-2} + \dots + \theta_q \epsilon_{t-q}
 $$
 
-d - is the number of differences \
+d - is the number of differences\
 P,D,Q - are the seasonal terms
 
 ## ARIMA Process
@@ -430,35 +428,51 @@ graph TD
 autoplot(air_passengers, value) 
 ```
 
-## ARIMA - Stationarity Example 
+## ARIMA - Stationarity Example {.smaller}
 
 ```{r airex-2}
 #| echo: true
+#| output-location: column
 air_passengers |> 
     mutate(log_v = log(value)) |> 
     autoplot(log_v) 
 ```
-## ARIMA - Stationarity Example 
+
+Constant variance, but trend and seasonality are present.
+
+## ARIMA - Stationarity Example {.smaller}
 
 ```{r airex-3}
 #| echo: true
 #| warning: false
+#| output-location: column
 air_passengers |> 
     mutate(log_v = log(value),
            D1 = difference(log_v, lag = 12)) |>
     autoplot(D1) 
 ```
-## ARIMA - Stationarity Example 
+
+Seasonality is removed, but trend exists.
+
+## ARIMA - Stationarity Example {.smaller}
 
 ```{r airex-4}
 #| echo: true
 #| warning: false
+#| output-location: column
 air_passengers |> 
     mutate(log_v = log(value),
            D1 = difference(log_v, lag = 12),
            D1d1 = difference(D1, lag = 1)) |>
     autoplot(D1d1) 
 ```
+
+Looks like whith noise. Let's do a statistical test.
+
+$H_0$ is that series is stationary:
+
+
+::: fragment
 ```{r airex-5}
 #| echo: true
 #| warning: false
@@ -470,6 +484,9 @@ air_passengers |>
            D1d1 = difference(D1, lag = 1)) |>
     features(D1d1, unitroot_kpss) 
 ```
+
+:::
+
 
 
 ## Chicago Forecast - ARIMA
