@@ -19,3 +19,51 @@ ul li {
   display: inline-block;  /* Ensure padding is respected */
   font-size: 1.3em;  /* Optional: Adjust font size */
 }
+
+.circle {
+  width: 300px !important;
+  height: 300px !important;
+  border-radius: 50% !important;
+  margin: 20px !important;
+  position: relative !important;
+  opacity: 0.5 !important;
+}
+
+.circle-blue {
+  background-color: rgba(88, 181, 201, 0.5) !important;
+}
+
+.circle-green {
+  background-color: rgba(157, 192, 59, 0.5) !important;
+}
+
+.circle-pink {
+  background-color: rgba(250, 100, 160, 0.5) !important;
+}
+
+.circle-text {
+  position: relative; 
+  top: 120px; 
+  left: 0px;
+  font-size: 0.8em;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.explain-text {
+  position: absolute; 
+  top: 300px; 
+  left: 25px;
+  font-size: 0.6em;
+}
+
+.star {
+  color: gold;
+  opacity: 0;  /* Initially hidden */
+  transition: opacity 1s ease-in-out;  /* Smooth appearance */
+}
+
+.star-visible {
+  opacity: 1;  /* Makes the star visible */
+}

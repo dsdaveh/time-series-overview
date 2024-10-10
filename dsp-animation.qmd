@@ -1,0 +1,109 @@
+---
+title: "Data Science Platforms"
+format: revealjs
+auto-animate: true
+css: styles.css
+---
+
+## Enterprise Data Disciplines {auto-animate="true" auto-animate-easing="ease-in-out"}
+
+:::::::::::: r-hstack
+::::: {.circle .circle-blue data-id="circle1"}
+::: circle-text
+Data\<Science
+:::
+
+::: explain-text
+Extracting insights from data using analysis and machine learning.
+:::
+:::::
+
+::::: {.circle .circle-green data-id="circle2"}
+::: circle-text
+DataOps
+:::
+
+::: explain-text
+Streamlining data management and processes for reliable data operations.
+:::
+:::::
+
+::::: {.circle .circle-pink data-id="circle3"}
+::: circle-text
+DevOps
+:::
+
+::: explain-text
+Integrating development and operations for faster, automated deployments.
+:::
+:::::
+::::::::::::
+
+## Enterprise Data Disciplines {auto-animate="true" auto-animate-easing="ease-in-out"}
+
+### Opportunities in the Overlap
+
+::::::::: r-stack
+:::: {.circle .circle-blue data-id="circle1" style="position: absolute; top: 0px; left: 200px;"}
+::: {.circle-text style="left: -30px; top: 100px;"}
+Data Science
+:::
+::::
+
+:::: {.circle .circle-green data-id="circle2" style="position: absolute; top: 0px; left: 400px;"}
+::: {.circle-text style="left: 30px; top: 100px;"}
+DataOps
+:::
+::::
+
+:::: {.circle .circle-pink data-id="circle3" style="position: absolute; top: 170px; left: 300px;"}
+::: {.circle-text style="top: 170px;"}
+DevOps
+:::
+::::
+:::::::::
+
+::: star
+★
+:::
+
+## Enterprise Data Disciplines 
+
+### Opportunities in the Overlap - The Sweetspot
+
+::::::::: r-stack
+:::: {.circle .circle-blue data-id="circle1" style="position: absolute; top: 0px; left: 200px;"}
+::: {.circle-text style="left: -30px; top: 100px;"}
+Data Science
+:::
+::::
+
+:::: {.circle .circle-green data-id="circle2" style="position: absolute; top: 0px; left: 400px;"}
+::: {.circle-text style="left: 30px; top: 100px;"}
+DataOps
+:::
+::::
+
+:::: {.circle .circle-pink data-id="circle3" style="position: absolute; top: 170px; left: 300px;"}
+::: {.circle-text style="top: 170px;"}
+DevOps
+:::
+::::
+:::::::::
+
+::: {.star .star-visible style="font-size: 1em; position: absolute; top: 370px; left: 450px;"}
+★
+:::
+
+:::: {style="font-size: 0.5em; position: absolute; top: 30%; left: 70%;"}
+::: {.star .star-visible style="font-size: 2em; position: relative; left: 100px"}
+★
+:::
+
+-   Interesting, Valuable Problems
+-   Multi-talented Individuals/Teams
+-   Data Science Platforms
+-   Enterprise AI Applications
+::::
+
+
