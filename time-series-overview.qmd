@@ -75,6 +75,7 @@ graph TD
 :::
 
 ::: {.column width="50%"}
+
 ```{r ex-air-1}
 #| echo: false
 #| fig-height: 8
@@ -100,6 +101,7 @@ autoplot(air_passengers, value) +
        y = "Passengers",
        x = "Year")
 ```
+
 :::
 :::::
 
