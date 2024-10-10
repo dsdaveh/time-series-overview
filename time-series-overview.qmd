@@ -527,7 +527,7 @@ chi_fit |> pivot_longer(everything())
 ::: {.column width="80%"}
 ```{r arima_plts2}
 #| fig-height: 8
-autoplot(chi_fc, level = NULL) +
+autoplot(chi_fc, level = NULL, size = 2) +
     autolayer(gva_chi_test, Incidents, alpha = 0.3)+
     labs(title = "Chicago GVA September Incidents Forecast") +
     facet_wrap(. ~ .model, ncol = 3) +
@@ -547,3 +547,24 @@ accuracy(chi_fc, gva_chi_test) |>
 :::
 ::::
 ::::::
+
+## Next Steps {.big-bullets}
+
+- Explore advanced models
+    - `fable::prophet()`
+    - ML algorithms `nnetar`, `xgboost`
+    - Time Series LLM
+- Get it out there! (with Quarto)
+    - publish on `github.io`
+    - Add a Shiny App
+    - publish on [](https://connect.procogia.com/), [(public) Posit Connect](https://posit.co/products/enterprise/connect/), [Quarto Pub](https://quartopub.com/)
+    
+## Q&A {.big-bullets}
+
+::: {.nonincremental}
+- Python equivalent to `tidyverts`?
+- 
+- 
+- Getting started with Quarto 
+    - on VS Code or Jupyter Notebooks
+:::
