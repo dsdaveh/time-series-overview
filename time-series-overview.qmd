@@ -18,9 +18,6 @@ This presentation offers a friendly introduction to Time Series, designed for ev
 \
 ***Please note**: This presentation includes data from the **Gun Violence Archive**, and some discussion around shooting fatalities which some may find upsetting.*
 
-## Data Science Platform Strategy
-
-{{< include dsp-animation.qmd >}}
 
 ```{r setup}
 #| echo: false
