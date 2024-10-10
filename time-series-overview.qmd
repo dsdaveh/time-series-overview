@@ -5,6 +5,7 @@ date: "October 10, 2024"
 format: 
     revealjs:
         incremental: true
+logo: images/ProCogia-Logo-1.png
 editor: visual
 css: styles.css
 execute: 
@@ -75,7 +76,6 @@ graph TD
 :::
 
 ::: {.column width="50%"}
-
 ```{r ex-air-1}
 #| echo: false
 #| fig-height: 8
@@ -101,11 +101,8 @@ autoplot(air_passengers, value) +
        y = "Passengers",
        x = "Year")
 ```
-
 :::
 :::::
-
-
 
 ## TS Forecast and Analysis {.smaller}
 
@@ -452,7 +449,6 @@ Looks like whith noise. Let's do a statistical test.
 
 $H_0$ is that series is stationary:
 
-
 ::: fragment
 ```{r airex-5}
 #| echo: true
@@ -465,10 +461,7 @@ air_passengers |>
            D1d1 = difference(D1, lag = 1)) |>
     features(D1d1, unitroot_kpss) 
 ```
-
 :::
-
-
 
 ## Chicago Forecast - ARIMA
 
@@ -531,22 +524,22 @@ accuracy(chi_fc, gva_chi_test) |>
 
 ## Next Steps {.big-bullets}
 
-- Explore advanced models
-    - `fable::prophet()`
-    - ML algorithms `nnetar`, `xgboost`
-    - Time Series LLM
-- Get it out there! (with Quarto)
-    - publish on `github.io`
-    - Add a Shiny App
-    - publish on [](https://connect.procogia.com/), [(public) Posit Connect](https://posit.co/products/enterprise/connect/), [Quarto Pub](https://quartopub.com/)
-    - Quarto for docs, web sites, books, ... See [Quarto Gallery](https://quarto.org/docs/gallery/)
-    
+-   Explore advanced models
+    -   `fable::prophet()`
+    -   ML algorithms `nnetar`, `xgboost`
+    -   Time Series LLM
+-   Get it out there! (with Quarto)
+    -   publish on `github.io`
+    -   Add a Shiny App
+    -   publish on [ ](https://connect.procogia.com/), [(public) Posit Connect](https://posit.co/products/enterprise/connect/), [Quarto Pub](https://quartopub.com/)
+    -   Quarto for docs, web sites, books, ... See [Quarto Gallery](https://quarto.org/docs/gallery/)
+
 ## Q&A {.big-bullets}
 
-::: {.nonincremental}
-- Python equivalent to `tidyverts`?
-- 
-- 
-- Getting started with Quarto 
-    - on [VS Code](https://quarto.org/docs/tools/vscode.html) or [Jupyter Lab](https://quarto.org/docs/tools/jupyter-lab.html)
+::: nonincremental
+-   Python equivalent to `tidyverts`?
+-   
+-   
+-   Getting started with Quarto
+    -   on [VS Code](https://quarto.org/docs/tools/vscode.html) or [Jupyter Lab](https://quarto.org/docs/tools/jupyter-lab.html)
 :::
