@@ -105,30 +105,9 @@ autoplot(air_passengers, value) +
 :::
 :::::
 
-## TS Forecast vs Analysis: Digression {.big-bullets}
 
-::::::: columns
-::: {.column width="50%"}
-### Data Science
 
-[![R for Data Science (2e) - Whole Game](images/r4ds-workflow.png){width="500"}](https://r4ds.hadley.nz/whole-game)
-:::
-
-::::: column
-::: fragment
-### Data Analytics
-:::
-
-::: fragment
-![](images/r4ds-workflow-bi.png){width="500"}
-:::
-:::::
-:::::::
-
--   Data Analytics = Data Science - Modeling
--   Business Intelligence = Data Analytics + DataOps
-
-## TS Forecast vs Analysis {.smaller}
+## TS Forecast and Analysis {.smaller}
 
 ### Introducing the `tidyverts`
 
@@ -380,12 +359,12 @@ gva_chi_train |>
 
 ### MA - Moving Average (Model)
 
--   Maximum Likelihood Estimatino (MLE) model using the residual (error) term(s)
+-   Maximum Likelihood Estimation (MLE) model using the residual (error) term(s)
 :::
 
 ## ARIMA (and SARIMA) Models
 
-`ARIMA(y ~ pdq() + PDQ() )`
+`ARIMA(y ~ pdq(p,d,q) + PDQ(P,D,Q) )`
 
 AR(p) where:
 
@@ -450,11 +429,11 @@ Constant variance, but trend and seasonality are present.
 #| output-location: column
 air_passengers |> 
     mutate(log_v = log(value),
-           D1 = difference(log_v, lag = 12)) |>
-    autoplot(D1) 
+           d1 = difference(log_v, lag = 1)) |>
+    autoplot(d1) 
 ```
 
-Seasonality is removed, but trend exists.
+Trend is removed, but seasonality exists.
 
 ## ARIMA - Stationarity Example {.smaller}
 
@@ -464,9 +443,9 @@ Seasonality is removed, but trend exists.
 #| output-location: column
 air_passengers |> 
     mutate(log_v = log(value),
-           D1 = difference(log_v, lag = 12),
-           D1d1 = difference(D1, lag = 1)) |>
-    autoplot(D1d1) 
+           d1 = difference(log_v, lag = 12),
+           d1D1 = difference(d1, lag = 1)) |>
+    autoplot(d1D1) 
 ```
 
 Looks like whith noise. Let's do a statistical test.
@@ -560,6 +539,7 @@ accuracy(chi_fc, gva_chi_test) |>
     - publish on `github.io`
     - Add a Shiny App
     - publish on [](https://connect.procogia.com/), [(public) Posit Connect](https://posit.co/products/enterprise/connect/), [Quarto Pub](https://quartopub.com/)
+    - Quarto for docs, web sites, books, ... See [Quarto Gallery](https://quarto.org/docs/gallery/)
     
 ## Q&A {.big-bullets}
 
@@ -568,5 +548,5 @@ accuracy(chi_fc, gva_chi_test) |>
 - 
 - 
 - Getting started with Quarto 
-    - on VS Code or Jupyter Notebooks
+    - on [VS Code](https://quarto.org/docs/tools/vscode.html) or [Jupyter Lab](https://quarto.org/docs/tools/jupyter-lab.html)
 :::
